@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { FastForwardIcon } from "@heroicons/react/solid";
 
 import initial from "lodash/initial.js";
@@ -11,37 +12,42 @@ const App = () => {
    const [ausgabeII, setAusgabeII] = useState("");
 
    const handleButtonClick = () => {
-      const zeilen = eingabe.trim().split("\n");
+      const zeilen = eingabe.trim().split("\n"); // Array aller Zeilen, Beispiel: [ "LN004-01\tbayernets/ OGE", ... ]
 
       let ergebnis = {};
 
-      zeilen.forEach(el => {
-         const [id, fnb] = el.split("\t");
-         if (!ergebnis[fnb]) {
-            ergebnis[fnb] = [];
+      zeilen.forEach(zeile => {
+         const [id, verketteteFNB] = zeile.split("\t"); // Beispiel: id: "LN004-01", verketteteFNB: "bayernets/ OGE"
+
+         if (!ergebnis[verketteteFNB]) {
+            ergebnis[verketteteFNB] = [];
          }
-         ergebnis[fnb].push(id);
+         ergebnis[verketteteFNB].push(id);
       });
 
+      // Beispiel: { "bayernets/ OGE": [ "LN004-01", ... ], ... }
+
       ergebnis = Object.keys(ergebnis).map(key => ({
-         id: key,
-         werte: ergebnis[key]
+         verketteteFNB: key,
+         ids: ergebnis[key]
       }));
 
-      const outI = ergebnis.map(el => `${el.id}:\n${el.werte.join("\n")}`).join("\n\n");
+      // Beispiel: [ { verketteteFNB: "bayernets/ OGE", ids: [ "LN004-01", ... ] }, ... ]
+
+      const outI = ergebnis.map(el => `${el.verketteteFNB}:\n${el.ids.join("\n")}`).join("\n\n");
       setAusgabeI(outI);
 
-      ergebnis = ergebnis.map(el => ({ ids: el.id.split("/ "), werte: el.werte }));
+      ergebnis = ergebnis.map(el => ({ fnb: el.verketteteFNB.split("/ "), ids: el.ids }));
 
-      // ;
+      // Beispiel: [ { fnb: [ "bayernets", "OGE" ], ids: [ "LN004-01", ... ] }, ... ]
 
       const outII = ergebnis
          .map(
             el =>
-               `${el.ids.length > 1 ? `${initial(el.ids).join(", ")} und ${last(el.ids)}` : head(el.ids)} ${
-                  el.werte.length > 1 ? "die Maßnahmen mit den ID-Nummern" : "die Maßnahme mit der ID-Nummer"
-               } ${el.werte.length > 1 ? `${initial(el.werte).join(", ")} und ${last(el.werte)}` : head(el.werte)} der Anlage 3 als ${
-                  el.ids.length > 1 ? "alleinige Projektverantwortliche" : "alleiniger Projektverantwortlicher"
+               `${el.fnb.length > 1 ? `${initial(el.fnb).join(", ")} und ${last(el.fnb)}` : head(el.fnb)} ${
+                  el.ids.length > 1 ? "die Maßnahmen mit den ID-Nummern" : "die Maßnahme mit der ID-Nummer"
+               } ${el.ids.length > 1 ? `${initial(el.ids).join(", ")} und ${last(el.ids)}` : head(el.ids)} der Anlage 3 als ${
+                  el.fnb.length > 1 ? "alleinige Projektverantwortliche" : "alleiniger Projektverantwortlicher"
                } zur Genehmigung beantragt,`
          )
          .join("\n\n");
@@ -51,16 +57,16 @@ const App = () => {
 
    return (
       <div className="min-h-screen flex justify-center items-center gap-8">
-         <textarea className="w-96 h-[36rem]" value={eingabe} onChange={e => setEingabe(e.target.value)} placeholder="Input: Zwei Spalten"></textarea>
+         <textarea className="w-80 h-[36rem]" value={eingabe} onChange={e => setEingabe(e.target.value)} placeholder="Input: Zwei Spalten aus Excel" />
          <button
             type="button"
             onClick={handleButtonClick}
-            className="block rounded-full p-2 bg-stone-100 border border-stone-300 transition duration-200 hover:bg-white focus:outline-none focus:bg-white"
+            className="block rounded-full p-2 bg-stone-100 border border-stone-300 transition duration-200 hover:bg-white focus:bg-white focus:outline-none"
          >
             <FastForwardIcon className="w-6 h-6" />
          </button>
-         <textarea className="w-96 h-[36rem]" value={ausgabeI} readOnly></textarea>
-         <textarea className="w-96 h-[36rem]" value={ausgabeII} readOnly></textarea>
+         <textarea className="w-80 h-[36rem]" value={ausgabeI} readOnly />
+         <textarea className="w-80 h-[36rem]" value={ausgabeII} readOnly />
       </div>
    );
 };
