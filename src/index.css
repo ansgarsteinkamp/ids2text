@@ -1,3 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+   @font-face {
+      font-family: "DM Sans";
+      src: url("./fonts/DMSans-MediumItalic.woff2") format("woff2"), url("./fonts/DMSans-MediumItalic.woff") format("woff");
+      font-weight: 500;
+      font-style: italic;
+   }
+
+   @font-face {
+      font-family: "DM Sans";
+      src: url("./fonts/DMSans-Bold.woff2") format("woff2"), url("./fonts/DMSans-Bold.woff") format("woff");
+      font-weight: bold;
+      font-style: normal;
+   }
+
+   @font-face {
+      font-family: "DM Sans";
+      src: url("./fonts/DMSans-BoldItalic.woff2") format("woff2"), url("./fonts/DMSans-BoldItalic.woff") format("woff");
+      font-weight: bold;
+      font-style: italic;
+   }
+
+   @font-face {
+      font-family: "DM Sans";
+      src: url("./fonts/DMSans-Italic.woff2") format("woff2"), url("./fonts/DMSans-Italic.woff") format("woff");
+      font-weight: normal;
+      font-style: italic;
+   }
+
+   @font-face {
+      font-family: "DM Sans";
+      src: url("./fonts/DMSans-Medium.woff2") format("woff2"), url("./fonts/DMSans-Medium.woff") format("woff");
+      font-weight: 500;
+      font-style: normal;
+   }
+
+   @font-face {
+      font-family: "DM Sans";
+      src: url("./fonts/DMSans-Regular.woff2") format("woff2"), url("./fonts/DMSans-Regular.woff") format("woff");
+      font-weight: normal;
+      font-style: normal;
+   }
+}
+
+@layer base {
+   [type="text"],
+   [type="email"],
+   [type="url"],
+   [type="password"],
+   [type="number"],
+   [type="date"],
+   [type="datetime-local"],
+   [type="month"],
+   [type="search"],
+   [type="tel"],
+   [type="time"],
+   [type="week"],
+   [multiple],
+   textarea,
+   select {
+      @apply transition duration-200 block px-3 py-1.5 text-sm rounded border-stone-300 hover:bg-stone-50 focus:bg-stone-50 focus:outline-none focus:ring-1 focus:ring-stone-200 focus:ring-offset-1 focus:border-stone-300;
+   }
+}
+
+@layer base {
+   html {
+      -webkit-tap-highlight-color: transparent;
+   }
+}
